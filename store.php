@@ -1,16 +1,23 @@
-<html>
-    <head>
-        <title>BookStore - Store</title>
-    </head>
-    <body>
-        <nav>
-            <br>
-            <h2>BookStore</h2>
-            <br>
-            <span><a href="index.html">Home</a></span>&nbsp;&nbsp;&nbsp;<span><a href="store.php">Store</a></span>
-        </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The BookPlace</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="wrapper">
+<div class="wrapper-holder">
+<header>
+<h1>THE BOOKPLACE</h1><br></header>
+<nav id="nav">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="store.php">Book List</a></li>
+</ul>   
+</nav>
         <main>
-        <br><br>
         <table width="60%">
             <thead>
                 <tr>
@@ -28,26 +35,38 @@
                 $result = @mysqli_query($dbc, $query);
                 $num = @mysqli_num_rows($result);
                 if($num>0){
-                    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                        echo '<tr><td align="left">' . $row['BookID'] . '</td>
-                        <td align="left">' . $row['BookName'] . '</td>
-                        <td align="left">' . $row['Quantity'] . '</td>
-                        </tr>';
+                    while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
+                        echo "<tr><td>{$row['BookID']}</td>
+		                          <td><a style='text-decoration:none' href='checkout.php?name={$row['BookName']}'>{$row['BookName']}</a></td>
+		                          <td>{$row['Quantity']}</td></tr>";
                     }
                 }
             ?>
             </tbody>
         </table>
         </main>
-        <footer>
-        <h3>Book Store</h3>
-              <p>
-                3055 Bramalea Road <br>
-               Brampton, ON, Canada<br><br>
-                <strong>Phone:</strong> +1  888-555-5500<br>
-                
-              </p>
-            <small><i>BookStore &copy; 2021</i></small>
+       <footer id="footer">
+<div class="footer-content">
+<ul class="left_side">
+<li>
+    <p>The BookPlace<br>
+        8945 Bramalea Road <br>
+        Brampton, ON, Canada</p>
+    <p>Tel. (421) 524 534<br></p>
+</li></ul>
+<ul class="right_side">
+<li>
+<div class="social">
+<a href="#" class="fb">Facebook</a>
+<a href="#" class="tw">Twitter</a></div>
+<div class="social">
+<a href="#" class="pn">Pinterest</a>
+<a href="#" class="gl">Google+</a></div></li></ul>
+<div class="clear"></div>
+<h5 class="copy">TheBookPlace &copy; 2021</h5>
+</div>
         </footer>
+    </div>   
+    </div>
     </body>
 </html>
