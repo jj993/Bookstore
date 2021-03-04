@@ -29,7 +29,6 @@ margin: 0 auto;}
 
 header{
     width: 100%;
-    // background-color: #48751A;
     height: 150px;
     background-image: url(images/B.png);
     background-repeat: no-repeat; 
@@ -124,8 +123,8 @@ th{
 	padding:20px 20px;
     margin: 0 auto;
     width: 70%;
-    height:300px;
-    box-shadow: 5px 10px 8px 10px #888888;
+    height:400px;
+    box-shadow: 5px 5px 8px 5px #0f4d92;
 }
 label {
     padding-top: 20px;
@@ -149,28 +148,8 @@ label {
     margin-top:10px;
     margin-bottom: 10px;
 }
-
-.error {
-	background-color: #FF6600;
-    padding: 8px 10px;
-    color: #FFFFFF;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-
-.success {
-	background-color: #c3c791;
-	padding: 8px 10px;
-	color: #FFFFFF;
-	border-radius: 4px;
-    font-size: 0.9em;
-}
-
-.info {
-	font-size: .8em;
-	color: #FF6600;
-	letter-spacing: 0px;
-	padding-left: 0px;
+.note {
+    color: #ff0000
 }
 
 .btnAction {
@@ -265,7 +244,7 @@ height: 34px;}
 /* for tablets */
 @media only screen and (max-width: 1024px) {
     .aside img{
-        height:  580px;}
+        height:  450px;}
 }
 
 /* for Smartphone */

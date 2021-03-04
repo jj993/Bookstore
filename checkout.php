@@ -1,9 +1,5 @@
 <?php
 session_start();	
-if (isset($_GET['name'])) {
-    $_SESSION['name'] = $_GET['name'];
-    $book_name = $_SESSION['name'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -27,81 +23,85 @@ if (isset($_GET['name'])) {
     
 </nav>
 	<main>
-	<?php
-require('mysqli_connect.php');
-?>
-
-<form id="formcheckout" method="post" action="checkout.php">
- <div>
-        <label>First Name:</label> 
-     <input type="text" name="FirstName" id="FirstName" class="InputBox" 
-            value="<?php if(isset($_POST['FirstName'])) 
-            echo $_POST['FirstName'];?>">
-    </div>
-	<div>
-        <label>Last Name:</label> 
-        <input type="text" name="LastName" id="LastName" class="InputBox" 
-               value="<?php if(isset($_POST['LastName'])) 
-               echo $_POST['LastName'];?>">
-    </div>
-    <div>
-        <label>Payment Options:</label>
-        <input type="radio" name="payment_option" id="PaymentOption"
-               value="Debit"<?php if(isset($_POST['PaymentOption'])) 
-               echo $_POST['PaymentOption'];?>>
-			  <label> Debit </label>
-        <input type="radio" name="payment_option" id="PaymentOption" 
-               value="Credit"<?php if(isset($_POST['PaymentOption'])) 
-               echo $_POST['PaymentOption'];?>>
-			  <label> Credit </label>
-        <input type="radio" name="payment_option" id="PaymentOption" 
-               value="Cash"<?php if(isset($_POST['PaymentOption'])) 
-               echo $_POST['PaymentOption'];?>>
-			  <label> Cash </label>
-	<div>
-        <input type="submit" value="Check Out" class="btnAction" />
-    </div>
-    </div>
-</form>
-</main>
-    
 <?php
+    if (isset($_GET['name'])) {
+    $_SESSION['name'] = $_GET['name'];
+    $book_name = $_SESSION['name'];
+}
+    
+ require('mysqli_connect.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$FirstName = $_POST['FirstName'];
-	$LastName = $_POST['LastName'];
+	
 	$book_name = $_SESSION['name'];
 	$errors = true;
-	if(empty($FirstName)) {
-		echo "first name is required. </br>";
+	if(empty($_POST['FirstName'])) {
+		$err1 = "First name is required.";
 		$errors = false;
 	}
-	if(empty($LastName)) {
-		echo "last name is required. </br>";
+	if(empty($_POST['LastName'])) {
+		$err2 = "Last name is required.";
 		$errors = false;
 	}
 	if(!isset($_POST['payment_option'])) {
-		echo "payment is required. </br>";
+		$err3 = "You must select a payment option.";
 		$errors = false;
 	}
 	if($errors==true) {
-		echo "submitted sucessfully! </br>";
+		
 		$FirstName = $dbc -> real_escape_string($_POST['FirstName']);
 		$LastName = $dbc -> real_escape_string($_POST['LastName']);
 		$payment_option = $dbc -> real_escape_string($_POST['payment_option']);
 		$book_name = $dbc -> real_escape_string($_SESSION['name']);
 		
-	
 		$query = "INSERT INTO `bookinventoryorder`(`FirstName`, `LastName`, `PaymentOption`,`BookName`) VALUES ('$FirstName','$LastName','$payment_option','$book_name')";
 		$insert = mysqli_query($dbc, $query);
+        if($insert) {
+            echo '<script>alert("Your Order has been placed Successfully. Thank You!")</script>';
+        }
 		$update_inventory = "Update bookinventory SET Quantity= Quantity-1 where BookName='$book_name'";
 	    mysqli_query($dbc, $update_inventory);
+        
+        session_unset();
+        session_destroy();
 	}
-	
-	
 	mysqli_close($dbc);
 }
 ?>
+
+<form id="formcheckout" method="post" action="checkout.php">
+ <div>
+        <label>First Name<span class="note">*</span>:</label> 
+        <input type="text" name="FirstName" class="InputBox" value="<?php if(isset($_POST['FirstName'])) 
+        echo $_POST['FirstName'];?>">
+        <?php if(isset($err1)) { echo "<p class='note'>".$err1."</p>";}?>
+    </div>
+	<div>
+        <label>Last Name<span class="note">*</span>:</label> 
+        <input type="text" name="LastName" class="InputBox" value="<?php if(isset($_POST['LastName'])) 
+        echo $_POST['LastName'];?>">
+        <?php if(isset($err2)) { echo "<p class='note'>".$err2."</p>";}?>
+    </div>
+    <div>
+        <label>Payment Options<span class="note">*</span>:</label>
+        <input type="radio" name="payment_option" value="Debit"<?php if(isset($_POST['PaymentOption'])) 
+               echo $_POST['PaymentOption'];?>>
+			  <label> Debit </label>
+        <input type="radio" name="payment_option" value="Credit"<?php if(isset($_POST['PaymentOption'])) 
+               echo $_POST['PaymentOption'];?>>
+			  <label> Credit </label>
+        <input type="radio" name="payment_option" value="Cash"<?php if(isset($_POST['PaymentOption'])) 
+               echo $_POST['PaymentOption'];?>>
+			  <label> Cash </label>
+        <?php if(isset($err3)) { echo "<p class='note'>".$err3."</p>";}?>
+        </div>
+	<div>
+        <input type="submit" value="Check Out" class="btnAction" />
+        
+    </div>
+    
+</form>
+</main>
 
 <footer id="footer">
 <div class="footer-content">

@@ -18,19 +18,19 @@
 </ul>   
 </nav>
         <main>
-        <table width="60%">
+        <table>
             <thead>
                 <tr>
-                    <th align="left">Book ID</th>
-                    <th align="left">Book Name</th>
-                    <th align="left">Quantity</th>
+                    <th>Book ID</th>
+                    <th>Book Name</th>
+                    <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
             <?php
 
-
                 require('mysqli_connect.php');
+                
                 $query = "SELECT * FROM bookinventory";
                 $result = @mysqli_query($dbc, $query);
                 $num = @mysqli_num_rows($result);
